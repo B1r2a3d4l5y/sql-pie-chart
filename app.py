@@ -11,7 +11,7 @@ def prompt_select_poll(polls):
         print(f"{poll[0]}: {poll[1]}")
 
         selected_poll = int(input(POLL_PROMPT))
-        chart_options_for_poll(selected_poll)
+        _chart_options_for_poll(selected_poll)
 
 
 def _chart_options_for_poll(poll_id):
@@ -20,6 +20,6 @@ def _chart_options_for_poll(poll_id):
     plt.show()
 
 
-    while (user_input := input(MENU_PROMPT)) != "q":
-        polls = database.get_polls()
-        prompt_select_poll(polls)
+while (user_input := input(MENU_PROMPT)) != "q":
+    polls = database.get_polls()
+    prompt_select_poll(polls)
