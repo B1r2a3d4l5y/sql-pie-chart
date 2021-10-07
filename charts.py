@@ -12,4 +12,5 @@ def create_pie_chart(options):
         normalize=False
 
     )
+
     return figure
