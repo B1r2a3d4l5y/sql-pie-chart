@@ -1,4 +1,4 @@
-mport matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import charts
 import database
 
@@ -17,7 +17,7 @@ def prompt_select_poll(polls):
 def _chart_options_for_poll(poll_id):
     options = database.get_options(poll_id)
     figure = charts.create_pie_chart(options)
-    plt.show()
+    figure.show()
 
 
 while (user_input := input(MENU_PROMPT)) != "q":
