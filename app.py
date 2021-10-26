@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+mport matplotlib.pyplot as plt
 import charts
 import database
 
@@ -10,8 +10,8 @@ def prompt_select_poll(polls):
     for poll in polls:
         print(f"{poll[0]}: {poll[1]}")
 
-        selected_poll = int(input(POLL_PROMPT))
-        _chart_options_for_poll(selected_poll)
+    selected_poll = int(input(POLL_PROMPT))
+    _chart_options_for_poll(selected_poll)
 
 
 def _chart_options_for_poll(poll_id):
