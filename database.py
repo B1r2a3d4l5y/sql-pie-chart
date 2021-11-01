@@ -1,25 +1,29 @@
-import matplotlib.pyplot as plt
-import charts
-import database
+import os
+import psycopg2
+from dotenv import load_dotenv
 
-MENU_PROMPT = "Enter 'q' to quit or anything else to chart a new poll"
-POLL_PROMPT = "Select the poll id to create a pie chart of vote percentages."
+load_dotenv()
 
+SELECT_POLLS = "SELECT * FROM polls;"
+SELECT_OPTIONS_IN_POLL = """
+SELECT options.option_text , SUM(votes.option_id) FROM options
+JOIN polls ON options.poll_id = polls.id  
+JOIN votes ON options.id = votes.option_id
+WHERE polls.id = %s
+GROUP BY options.option_text;"""
 
-def prompt_select_poll(polls):
-    for poll in polls:
-        print(f"{poll[0]}: {poll[1]}")
-
-    selected_poll = int(input(POLL_PROMPT))
-    _chart_options_for_poll(selected_poll)
-
-
-def _chart_options_for_poll(poll_id):
-    options = database.get_options(poll_id)
-    figure = charts.create_pie_chart(options)
-    plt.show()
+connection = psycopg2.connect(os.environ.get("DATABASE_URI"))
 
 
-while (user_input := input(MENU_PROMPT)) != "q":
-    polls = database.get_polls()
-    prompt_select_poll(polls)
+def get_polls():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(SELECT_POLLS)
+            return cursor.fetchall()
+
+
+def get_options(poll_id: int):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(SELECT_OPTIONS_IN_POLL, (poll_id,))
+            return cursor.fetchall()
